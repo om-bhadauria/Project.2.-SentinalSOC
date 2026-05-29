@@ -1,0 +1,7 @@
+[
+  {
+    "action": "log_event",
+    "ttl": 0,
+    "description": "Create a persistent annotation inside the system event stream for future Threat Hunting"
+  }
+]

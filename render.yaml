@@ -1,0 +1,43 @@
+services:
+  - type: web
+    name: sentinelsoc-api
+    runtime: docker
+    plan: free
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000
+      - key: INIT_DB
+        value: false
+      - key: USE_REDIS
+        value: false
+      - key: DEMO_MODE
+        value: false
+      - key: CORS_ORIGIN
+        value: https://sentinelsoc-dashboard.onrender.com
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DEMO_ADMIN_EMAIL
+        value: admin@sentinel.soc
+      - key: DEMO_ADMIN_PASS
+        sync: false
+      - key: VT_API_KEY
+        sync: false
+
+  - type: web
+    name: sentinelsoc-dashboard
+    runtime: static
+    plan: free
+    buildCommand: cd frontend && npm ci && npm run build
+    staticPublishPath: frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://sentinelsoc-api.onrender.com/api
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

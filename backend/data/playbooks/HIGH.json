@@ -1,0 +1,22 @@
+[
+  {
+    "action": "block_login",
+    "ttl": 600000,
+    "description": "Automatically block user login for 10 minutes"
+  },
+  {
+    "action": "revoke_tokens",
+    "ttl": 3600000,
+    "description": "Revoke all active session tokens for the next hour"
+  },
+  {
+    "action": "quarantine_device",
+    "ttl": 600000,
+    "description": "Isolate the telemetry source device ID for 10 minutes"
+  },
+  {
+    "action": "send_admin_notification",
+    "ttl": 0,
+    "description": "Immediately ping PagerDuty / SOC Admins"
+  }
+]

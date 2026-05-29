@@ -1,0 +1,12 @@
+[
+  {
+    "action": "warn_user",
+    "ttl": 0,
+    "description": "Display a dynamic warning immediately inside the authenticated user app"
+  },
+  {
+    "action": "notify_email",
+    "ttl": 0,
+    "description": "Send an automated identity verification email to the user"
+  }
+]

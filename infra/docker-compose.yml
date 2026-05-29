@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:6-alpine
+    ports:
+      - "6379:6379"
+
+  backend:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile.backend
+    ports:
+      - "4000:4000"
+    environment:
+      - PORT=4000
+      - REDIS_URL=redis://redis:6379
+      - USE_REDIS=true
+      - JWT_SECRET=sentinel-demo-key
+      - CORS_ORIGIN=http://localhost:5173
+    depends_on:
+      - redis
+
+  phishing_model:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile.ai_phishing
+    ports:
+      - "8000:8000"
+
+  behavior_model:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile.ai_behavior
+    ports:
+      - "8001:8001"
+
+  frontend:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile.frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:4000/api
+    depends_on:
+      - backend

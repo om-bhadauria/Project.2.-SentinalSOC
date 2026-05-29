@@ -1,0 +1,69 @@
+{
+  "scenario": "Advanced Correlated Attack (Phishing -> Stolen Session -> Lateral Anomaly)",
+  "actors": {
+    "targetUser": "jdoe_finance",
+    "attackerIp": "192.168.1.55",
+    "attackerDevice": "dev-hacker-99x"
+  },
+  "sequence": [
+    {
+      "step": 1,
+      "name": "Target clicks suspected phishing link via email",
+      "endpoint": "/api/scan/url",
+      "payload": {
+        "url": "http://evil.com/phish"
+      },
+      "delay_ms": 2000
+    },
+    {
+      "step": 2,
+      "name": "System explicitly records malicious click correlation activity",
+      "endpoint": "/api/activity",
+      "payload": {
+        "userId": "jdoe_finance",
+        "eventType": "phish_click",
+        "metadata": { "context": "email_link" }
+      },
+      "delay_ms": 3000
+    },
+    {
+      "step": 3,
+      "name": "Attacker registers new unseen device signature",
+      "endpoint": "/api/device/register",
+      "override_ip": "192.168.1.55",
+      "payload": {
+        "userId": "jdoe_finance",
+        "deviceId": "dev-hacker-99x",
+        "deviceMetadata": {
+          "userAgent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36",
+          "timezone": "Europe/Moscow"
+        }
+      },
+      "delay_ms": 1500
+    },
+    {
+      "step": 4,
+      "name": "Attacker leverages stolen session/creds to spoof login",
+      "endpoint": "/api/activity",
+      "override_ip": "192.168.1.55",
+      "payload": {
+        "userId": "jdoe_finance",
+        "eventType": "new_device",
+        "metadata": { "deviceId": "dev-hacker-99x" }
+      },
+      "delay_ms": 2500
+    },
+    {
+      "step": 5,
+      "name": "Attacker exhibits abnormal workflow (Biometric/Network Anomaly)",
+      "endpoint": "/api/activity",
+      "override_ip": "192.168.1.55",
+      "payload": {
+        "userId": "jdoe_finance",
+        "eventType": "behavior_anomaly",
+        "metadata": { "score": 0.9, "reason": "unfamiliar typing dynamics mapping" }
+      },
+      "delay_ms": 1000
+    }
+  ]
+}

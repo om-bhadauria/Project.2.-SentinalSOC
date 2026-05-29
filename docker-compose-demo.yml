@@ -1,0 +1,111 @@
+services:
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - sentinelsoc-net
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - sentinelsoc-net
+
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=socadmin
+      - POSTGRES_PASSWORD=socpassword
+      - POSTGRES_DB=sentinelsoc
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - sentinelsoc-net
+
+  ai-service:
+    build:
+      context: ./ai/behavior
+    ports:
+      - "8000:8000"
+    command: uvicorn app:app --host 0.0.0.0 --port 8000 --reload
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8000
+    networks:
+      - sentinelsoc-net
+
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    command: npm start
+    environment:
+      - PORT=5000
+      - NODE_ENV=development
+      - DEMO_MODE=true
+      - STUB_ML_SERVICE=false
+      - CORS_ORIGIN=http://localhost:3000,http://localhost:80
+      - USE_REDIS=true
+      - REDIS_URL=redis://redis:6379
+      - MONGO_URI=mongodb://mongodb:27017/sentinelsoc
+      - AUTO_RESPONDER_ENABLED=true
+      - DRY_RUN=true
+      - JWT_SECRET=sentinelsoc_local_dev_secret_key_123!
+      - DEMO_ADMIN_USER=admin
+      - DEMO_ADMIN_PASS=SentinelDemo123!
+      - DATABASE_URL=postgresql://socadmin:socpassword@postgres:5432/sentinelsoc
+    depends_on:
+      - mongodb
+      - redis
+      - postgres
+      - ai-service
+    networks:
+      - sentinelsoc-net
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - sentinelsoc-net
+
+  worker:
+    build:
+      context: ./backend
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    command: npm run worker
+    environment:
+      - NODE_ENV=development
+      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=postgresql://socadmin:socpassword@postgres:5432/sentinelsoc
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - sentinelsoc-net
+
+volumes:
+  mongo_data:
+  redis_data:
+  pg_data:
+
+networks:
+  sentinelsoc-net:
+    driver: bridge

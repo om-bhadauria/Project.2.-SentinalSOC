@@ -1,0 +1,19 @@
+
+# Override specifically for Demo Reliability 
+# Drops connections to external apis, enforces stub modes, and speeds up test paths.
+services:
+  backend:
+    environment:
+      - NODE_ENV=development
+      - VT_API_KEY= # Deliberately left blank to engage vtService.js stub mapping
+      - USE_REDIS=true
+      - DEMO_ADMIN_USER=admin
+      - DEMO_ADMIN_PASS=SentinelDemo123!
+    ports:
+      - "4000:4000"
+
+  ai-service:
+    environment:
+      - FAST_MODE=true
+    ports:
+      - "8000:8000"

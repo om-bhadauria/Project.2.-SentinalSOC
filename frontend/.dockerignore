@@ -1,0 +1,12 @@
+node_modules
+dist
+build
+*.log
+build*.txt
+err.txt
+eslint_report.json
+lint_result.txt
+.env
+.env.*
+npm-debug.log*
+

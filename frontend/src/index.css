@@ -1,0 +1,138 @@
+@import "tailwindcss";
+
+@theme {
+  --color-darkBg: #0f1115;
+  --color-panel: rgba(22, 27, 34, 0.7);
+  --color-panel-border: rgba(255, 255, 255, 0.1);
+  --color-accent: #00ffcc;
+  --color-danger: #ff4d4d;
+  --color-warning: #ffaa00;
+  --color-textMain: #e0e6ed;
+  --color-textMuted: #8b949e;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background:
+    radial-gradient(circle at top left, rgba(0, 255, 204, 0.08), transparent 30%),
+    linear-gradient(135deg, #080b10 0%, #0f1115 45%, #10141b 100%);
+  color: var(--color-textMain);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: rgba(0, 255, 204, 0.28);
+  color: #ffffff;
+}
+
+/* Custom Scrollbar for dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Glassmorphism Panel Base */
+.glass-panel {
+  background: linear-gradient(180deg, rgba(20, 25, 33, 0.9), rgba(10, 14, 20, 0.86));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-panel-border);
+  border-radius: 8px;
+  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.24);
+}
+
+button,
+a,
+input {
+  outline-color: rgba(0, 255, 204, 0.65);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid rgba(0, 255, 204, 0.72);
+  outline-offset: 2px;
+}
+
+input::placeholder {
+  color: rgba(139, 148, 158, 0.78);
+}
+
+.command-hero {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 18px 55px rgba(0, 0, 0, 0.26);
+}
+
+.command-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(0, 255, 204, 0.12), transparent 36%),
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: auto, 42px 42px, 42px 42px;
+  opacity: 0.75;
+}
+
+.threat-grid {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 38px 38px;
+}
+
+/* Animations */
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 5px var(--color-danger); }
+  50% { box-shadow: 0 0 20px var(--color-danger); }
+  100% { box-shadow: 0 0 5px var(--color-danger); }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 1.5s infinite;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+@keyframes attackBeam {
+  0% { stroke-dashoffset: 100; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.attack-beam {
+  stroke-dasharray: 100;
+  animation: attackBeam 1.5s linear infinite;
+}
+
+.reverse-beam {
+  animation-direction: reverse;
+  animation-duration: 2.6s;
+}

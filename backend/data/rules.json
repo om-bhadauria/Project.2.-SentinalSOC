@@ -1,0 +1,44 @@
+[
+  {
+    "id": "rule_phish_newdevice",
+    "description": "User clicked a phishing link and subsequently logged in from a new device.",
+    "conditions": ["phish_click", "new_device"],
+    "weight": 0.6,
+    "recommended_actions": ["block_login", "revoke_tokens"]
+  },
+  {
+    "id": "rule_behavior_download",
+    "description": "User exhibited behavioral anomaly followed by a large file download.",
+    "conditions": ["behavior_anomaly", "large_download"],
+    "weight": 0.5,
+    "recommended_actions": ["quarantine_device", "send_admin_notification"]
+  },
+  {
+    "id": "rule_multiple_failed_logins",
+    "description": "User failed to login multiple times in a short window.",
+    "conditions": ["failed_login", "failed_login", "failed_login"],
+    "weight": 0.5,
+    "recommended_actions": ["block_login"]
+  },
+  {
+    "id": "rule_malicious_url",
+    "description": "User scanned a highly malicious URL.",
+    "conditions": ["malicious_url_scanned"],
+    "weight": 0.4,
+    "recommended_actions": ["send_admin_notification"]
+  },
+  {
+    "id": "rule_high_risk_device",
+    "description": "User logged in from a device marked as high risk.",
+    "conditions": ["high_risk_device_alert"],
+    "weight": 0.8,
+    "recommended_actions": ["block_login", "quarantine_device"]
+  },
+  {
+    "id": "rule_demo_cyber_attack",
+    "description": "User scanned malicious URL, logged in from suspicious device, and had behavioral anomalies.",
+    "conditions": ["malicious_url_scanned", "high_risk_device_alert", "behavior_anomaly"],
+    "weight": 0.9,
+    "recommended_actions": ["block_login", "quarantine_device", "send_admin_notification"]
+  }
+]

@@ -1,0 +1,10 @@
+FROM python:3.10-slim
+WORKDIR /app
+COPY ai/phishing_model/requirements.txt ./
+# xgboost requires libgomp1 on some slim variants, skipping for minimal setup, rely on pip wheels
+RUN pip install --no-cache-dir -r requirements.txt
+COPY ai/phishing_model/ ./
+# Output dummy model immediately so prediction has something
+RUN python train_cli.py --source dummy
+EXPOSE 8000
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
