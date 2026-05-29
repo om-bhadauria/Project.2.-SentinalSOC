@@ -95,19 +95,11 @@ Generate realistic security scenarios:
 
 ## Security Operations Dashboard
 
-Add your dashboard screenshot here:
-
-```image
-screenshots/dashboard.png
-```
+![Security Operations Dashboard](screenshots/dashboard.png)
 
 ## Global Threat Feed
 
-Add your threat feed screenshot here:
-
-```text
-screenshots/threat-feed.png
-```
+![Global Threat Feed](screenshots/threat-feed.png)
 
 ---
 
