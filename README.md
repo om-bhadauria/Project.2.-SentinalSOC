@@ -279,7 +279,7 @@ GitHub:
 https://github.com/om-bhadauria
 
 LinkedIn:
-Add your LinkedIn profile here
+www.linkedin.com/in/ombhadauria
 
 ---
 
