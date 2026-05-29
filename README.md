@@ -97,7 +97,7 @@ Generate realistic security scenarios:
 
 Add your dashboard screenshot here:
 
-```text
+```image
 screenshots/dashboard.png
 ```
 
