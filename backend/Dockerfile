@@ -14,7 +14,6 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/src ./src
 COPY --from=builder /app/data ./data
 COPY package*.json ./
-COPY .env.example .env
 
 ENV NODE_ENV=production
 EXPOSE 4000
